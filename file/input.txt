@@ -2,3 +2,6 @@ hello world
 hello storm
 this is the first example of storm
 welcome to the world of storm
+kafka includes producer and consumer
+topic partition broker
+today's topic is learning storm and kafka

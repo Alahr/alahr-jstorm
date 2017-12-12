@@ -13,13 +13,12 @@ import java.util.Properties;
 
 public class PropertiesUtil {
     private final Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
+
     public Properties getProperties() {
         return properties;
     }
 
     private Properties properties;
-
-    private boolean absolutePath = false;
 
     public PropertiesUtil(String fileName, boolean absolutePath) {
         if (absolutePath) {
@@ -47,10 +46,6 @@ public class PropertiesUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public String getProperty(String key) {
-        return properties.getProperty(key);
     }
 
     public Map getAllProperties() {

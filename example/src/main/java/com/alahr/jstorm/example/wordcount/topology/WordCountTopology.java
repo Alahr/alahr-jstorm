@@ -29,14 +29,13 @@ public class WordCountTopology {
         String outputFile = "file/output.txt";
 
         Config conf = new Config();
-        //建议加上这行，使得每个bolt/spout的并发度都为1
-        conf.put(Config.TOPOLOGY_MAX_TASK_PARALLELISM, 1);
+
         conf.put("inputFile", inputFile);
         conf.put("outputFile", outputFile);
         conf.setDebug(true);
 
         if (args != null && args.length > 0) {
-            conf.setNumWorkers(3);
+            logger.info("Cluster topology: {}", args[0]);
             try{
                 StormSubmitter.submitTopology(args[0], conf, builder.createTopology());
             }
@@ -49,8 +48,6 @@ public class WordCountTopology {
         }
         else {
             String topName = "example-word-count-topology";
-            conf.setMaxTaskParallelism(3);
-
             LocalCluster cluster = new LocalCluster();
             cluster.submitTopology(topName, conf, builder.createTopology());
 

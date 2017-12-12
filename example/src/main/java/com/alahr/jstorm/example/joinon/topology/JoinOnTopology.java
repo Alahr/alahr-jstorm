@@ -29,8 +29,6 @@ public class JoinOnTopology {
                 .fieldsGrouping("animal-spout", "animal", new Fields("joinKey"));
 
         Config conf = new Config();
-        //建议加上这行，使得每个bolt/spout的并发度都为1
-//        conf.put(Config.TOPOLOGY_MAX_TASK_PARALLELISM, 1);
 
         conf.setDebug(true);
         conf.setNumWorkers(4);
