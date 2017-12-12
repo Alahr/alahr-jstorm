@@ -1,0 +1,4 @@
+hello world
+hello storm
+this is the first example of storm
+welcome to the world of storm
