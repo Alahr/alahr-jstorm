@@ -16,14 +16,14 @@ public class GenerateSpout extends BaseRichSpout {
 
     private SpoutOutputCollector collector;
 
-    private String[] sentences = {
+    private static String[] sentences = {
             "hello world",
             "hello storm",
             "this is the first example of storm",
             "welcome to the world of storm"
     };
 
-    private int index = 0;
+    private static int index = 0;
 
     public void open(Map conf, TopologyContext context, SpoutOutputCollector collector){
         this.collector = collector;
@@ -31,7 +31,7 @@ public class GenerateSpout extends BaseRichSpout {
 
     public void nextTuple(){
         if(index >= sentences.length){
-            index = 0;
+            return;
         }
         logger.info("GenerateSpout:\t"+sentences[index]);
         this.collector.emit(new Values(sentences[index]));
