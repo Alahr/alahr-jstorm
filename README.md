@@ -21,6 +21,11 @@ common 工具类包
 实现person表和animal表关联，是左连接、右连接、内连接还是外连接，可以通过程序设计。
 mysql配置信息在common/resource/database.properties中
 
+### 2.2.3 back press example
+反压（back pressure）
+jstorm默认开启反压机制，在bolt处理不及时，让spout停止或减缓发送tuple
+若关闭反压，bolt在短时间内充满ExecuteQueue
+
 ## 2.3 jstorm kafka module
 jstorm消费kafka数据，结果显示在日志中。
 目前存在的问题：消费完kafka数据后，程序会报错。
