@@ -30,11 +30,12 @@ public class WordCountBolt extends BaseRichBolt {
     public void execute(Tuple tuple) {
         String word = tuple.getString(0);
         Integer count = this.counts.get(word);
-        if(count == null){
+        if (count == null) {
             count = 0;
         }
         count++;
         this.counts.put(word, count);
+        this.collector.ack(tuple);
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
@@ -53,20 +54,19 @@ public class WordCountBolt extends BaseRichBolt {
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(outputFile);
-            for(String key : keys){
-                fileWriter.write(key + " "+this.counts.get(key)+"\n");
+            for (String key : keys) {
+                System.out.println(key + " " + this.counts.get(key) + "\n");
+                fileWriter.write(key + " " + this.counts.get(key) + "\n");
             }
             fileWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
-            try{
-                if(null != fileWriter) {
+        } finally {
+            try {
+                if (null != fileWriter) {
                     fileWriter.close();
                 }
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

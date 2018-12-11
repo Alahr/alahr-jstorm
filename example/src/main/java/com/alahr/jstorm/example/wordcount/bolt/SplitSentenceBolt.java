@@ -24,10 +24,11 @@ public class SplitSentenceBolt extends BaseRichBolt {
     public void execute(Tuple tuple) {
         String sentence = tuple.getString(0);
         String[] words = sentence.split(" ");
-        for(String word : words){
+        for (String word : words) {
             word = word.trim();
-            if(null != word && !word.equals("")){
+            if (null != word && !word.equals("")) {
                 word = word.toLowerCase();
+                System.out.println("word:\t" + word);
                 collector.emit(new Values(word));
             }
         }
