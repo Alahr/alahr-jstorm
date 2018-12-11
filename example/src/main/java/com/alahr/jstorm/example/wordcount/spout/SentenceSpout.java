@@ -26,50 +26,48 @@ public class SentenceSpout extends BaseRichSpout {
 
     private ConcurrentHashMap<String, Values> pending;
 
-    public void open(Map conf, TopologyContext context, SpoutOutputCollector collector){
+    public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
         this.collector = collector;
         this.pending = new ConcurrentHashMap<String, Values>();
-        try{
+        try {
             String inputFile = conf.get("inputFile").toString();
             fileReader = new FileReader(inputFile);
-        }
-        catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public void nextTuple(){
-        if(completed){
+    public void nextTuple() {
+        if (completed) {
             return;
         }
 
         bufferedReader = new BufferedReader(fileReader);
-        try{
+        try {
             String sentence;
             int i = 1;
-            while((sentence = bufferedReader.readLine()) != null){
-                String messageId = "msg-"+i;
+            while ((sentence = bufferedReader.readLine()) != null) {
+                String messageId = "msg-" + i;
+                System.out.println("sentence:\t" + sentence);
                 Values vs = new Values(sentence);
                 this.pending.put(messageId, vs);
                 this.collector.emit(vs, messageId);
                 i++;
             }
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             completed = true;
         }
     }
 
     public void ack(Object msgId) {
-        logger.info("ack messageId:\t"+msgId.toString());
+        logger.info("ack messageId:\t" + msgId.toString());
         this.pending.remove(msgId);
     }
 
     public void fail(Object msgId) {
-        logger.error("fail messageId:\t"+msgId.toString()+", then emit again");
+        logger.error("fail messageId:\t" + msgId.toString() + ", then emit again");
         this.collector.emit(this.pending.get(msgId), msgId);
     }
 
@@ -77,13 +75,12 @@ public class SentenceSpout extends BaseRichSpout {
         declarer.declare(new Fields("sentence"));
     }
 
-    public void close(){
-        try{
-            if(null != this.fileReader){
+    public void close() {
+        try {
+            if (null != this.fileReader) {
                 this.fileReader.close();
             }
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
